@@ -8,13 +8,11 @@ BEGIN
   DECLARE total_score FLOAT;
   DECLARE num_corrections INT;
 
-  -- Calculate total score and number of corrections for the user
   SELECT SUM(score), COUNT(*)
   INTO total_score, num_corrections
   FROM corrections
   WHERE corrections.user_id = user_id;
 
-  -- Update user's average score
   IF num_corrections > 0 THEN
     SET total_score = total_score / num_corrections;
   ELSE
