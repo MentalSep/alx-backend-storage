@@ -18,7 +18,7 @@ BEGIN
   IF num_corrections > 0 THEN
     SET total_score = total_score / num_corrections;
   ELSE
-    SET total_score = NULL;  -- Set NULL for no corrections
+    SET total_score = 0;  -- Set NULL for no corrections
   END IF;
 
   UPDATE users
