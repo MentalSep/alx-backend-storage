@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 DELIMITER //
 CREATE PROCEDURE ComputeAverageScoreForUser (user_id INT)
 BEGIN
-  DECLARE total_score INT;
+  DECLARE total_score FLOAT;
 --   DECLARE num_corrections INT;
 
 --   -- Calculate total score and number of corrections for the user
