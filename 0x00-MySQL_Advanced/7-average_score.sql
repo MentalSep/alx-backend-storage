@@ -1,9 +1,7 @@
 -- Create stored procedure ComputeAverageScoreForUser
 DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 DELIMITER //
-CREATE PROCEDURE ComputeAverageScoreForUser (
-  IN user_id INT
-)
+CREATE PROCEDURE ComputeAverageScoreForUser (user_id INT)
 BEGIN
   DECLARE total_score INT;
 --   DECLARE num_corrections INT;
