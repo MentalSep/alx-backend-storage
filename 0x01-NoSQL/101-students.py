@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""Module for top_students"""
 
 def top_students(mongo_collection):
     """Returns all students sorted by average score in descending order"""
