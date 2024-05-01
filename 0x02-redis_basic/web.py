@@ -16,7 +16,7 @@ def cache_and_track_access(func: Callable) -> Callable:
 
         cached_content = r.get(url)
         if cached_content:
-            return cached_content.decode()
+            return cached_content.decode("utf-8")
 
         response = func(url)
         content = response.text
