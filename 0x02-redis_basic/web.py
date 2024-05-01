@@ -3,11 +3,12 @@
 import requests
 import redis
 from functools import wraps
+from typing import Callable
 
 
-def cache_and_track_access(func):
+def cache_and_track_access(func: Callable) -> Callable:
     @wraps(func)
-    def wrapper(url):
+    def wrapper(str: url) -> str:
         """Cache the result of the request and track access"""
         r = redis.Redis()
 
