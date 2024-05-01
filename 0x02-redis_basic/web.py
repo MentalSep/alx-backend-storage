@@ -8,7 +8,7 @@ from typing import Callable
 
 def cache_and_track_access(func: Callable) -> Callable:
     @wraps(func)
-    def wrapper(str: url) -> str:
+    def wrapper(url: str) -> str:
         """Cache the result of the request and track access"""
         r = redis.Redis()
 
