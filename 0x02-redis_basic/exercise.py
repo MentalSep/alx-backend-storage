@@ -20,10 +20,12 @@ def call_history(fn: Callable) -> Callable:
     """stores the history of inputs and outputs for a particular function"""
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
-        input = str(args)
-        self._redis.rpush(fn.__qualname__ + ":inputs", input)
+        input_key = "{}:inputs".format(fn.__qualname__)
+        output_key = "{}:outputs".format(fn.__qualname__)
+
+        self._redis.rpush(input_key, str(args))
         output = fn(self, *args, **kwargs)
-        self._redis.rpush(fn.__qualname__ + ":outputs", output)
+        self._redis.rpush(output_key, output)
         return output
 
     return wrapper
