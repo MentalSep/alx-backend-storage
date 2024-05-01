@@ -7,18 +7,18 @@ from typing import Callable
 
 
 def cache_and_track_access(func: Callable) -> Callable:
+    """Decorator to cache the result of the request and track access"""
     @wraps(func)
     def wrapper(url: str) -> str:
-        """Cache the result of the request and track access"""
         r = redis.Redis()
-        r.incr('count:{}'.format(url))
-        result = r.get('result:{}'.format(url))
-        if result:
-            return result.decode('utf-8')
-        result = func(url)
-        r.set('count:{}'.format(url), 0)
-        r.setex('result:{}'.format(url), 10, result)
-        return result
+        r.incr("count:{}".format(url))
+        cached_page = r.get("{}".format(url))
+        if cached_page:
+            return cached_page.decode("utf-8")
+        response = func(url)
+        r.set("{}".format(url), response, 10)
+        return response
+
     return wrapper
 
 
