@@ -6,16 +6,16 @@ from functools import wraps
 from typing import Callable
 
 
-def cache_and_track_access(func: Callable) -> Callable:
+def cache_and_track_access(fn: Callable) -> Callable:
     """Decorator to cache the result of the request and track access"""
-    @wraps(func)
+    @wraps(fn)
     def wrapper(url: str) -> str:
         r = redis.Redis()
         r.incr("count:{}".format(url))
         cached_page = r.get("{}".format(url))
         if cached_page:
             return cached_page.decode("utf-8")
-        response = func(url)
+        response = fn(url)
         r.set("{}".format(url), response, 10)
         return response
 
