@@ -2,7 +2,7 @@
 """Module to store data in Redis."""
 import uuid
 import redis
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -15,3 +15,19 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str,
+            fn: Callable = None) -> Union[str, bytes, int, float, None]:
+        """applies an optional conversion function"""
+        data = self._redis.get(key)
+        if data is None:
+            return None
+        return fn(data) if fn else data
+
+    def get_str(self, key: str) -> str:
+        """Retrieves data from Redis and converts it to a string"""
+        return self.get(key, lambda d: d.decode("utf-8"))
+
+    def get_int(self, key: str) -> int:
+        """Retrieves data from Redis and converts it to an integer"""
+        return self.get(key, int)
