@@ -10,6 +10,7 @@ def cache_and_track_access(fn: Callable) -> Callable:
     """Decorator to cache the result of the request and track access"""
     @wraps(fn)
     def wrapper(url: str) -> str:
+        """Wrapper function"""
         r = redis.Redis()
         r.incr("count:{}".format(url))
         cached_page = r.get("{}".format(url))
