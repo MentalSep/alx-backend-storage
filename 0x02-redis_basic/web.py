@@ -11,23 +11,18 @@ def cache_and_track_access(func: Callable) -> Callable:
     def wrapper(url: str) -> str:
         """Cache the result of the request and track access"""
         r = redis.Redis()
-
-        r.incr("count:{}".format(url))
-
-        cached_content = r.get(url)
-        if cached_content:
-            return cached_content.decode("utf-8")
-
-        response = func(url)
-        content = response.text
-
-        r.setex(url, 10, content)
-
-        return content
+        r.incr('count:{}'.format(url))
+        result = r.get('result:{}'.format(url))
+        if result:
+            return result.decode('utf-8')
+        result = func(url)
+        r.set('count:{}'.format(url), 0)
+        r.setex('result:{}'.format(url), 10, result)
+        return result
     return wrapper
 
 
 @cache_and_track_access
 def get_page(url: str) -> str:
     """Fetch the page content"""
-    return requests.get(url)
+    return requests.get(url).text
